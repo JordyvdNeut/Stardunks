@@ -1,13 +1,27 @@
 <div>
   <?= $productsSearch ?>
-  <a href="index.php"><button class="btn">Delete selected</button></a>
-  <a href="index.php?op=getProductForm"><button class="btn">create product</button></a>
 </div>
 
 <?php
-echo $products[1];
-for ($i = 1; $i <= $products[0]; $i++) {
-  echo "<li><div onClick=/localhost/index.php?op=read&p=" . $i . ">" . $i .
-    "</div></li>";
+$toDay = date("Y/m/d");
+$tomorrow = date("Y-m-d", time() + 86400);
+echo($products[1]);
+
+echo "<div class='form-group row'>";
+for ($i = 1; $i <= $products[0]; $i ++) {
+  echo "
+  <div class='col' style='margin-right: 5px;'>
+  <a href='index.php?op=read&p=$i'><u>" . " " . $i . "</u></a>
+  </div>
+  ";
 }
+
+
+// echo "<div class='col float-right'><a><button class='btn'>Export CSV</button></a></div>";
+// echo "<div class='col float-right input-group input-daterange'>";
+// echo "<input type='text' class='form-control' value='" . date("Y/m/d") . "' placeholder='from'>";
+// echo "<div class='input-group-addon'>to</div>";
+// echo "<input type='text' class='form-control' value='" . date("Y-m-d", time() + 86400) . "' placeholder='till'>";
+// echo "</div>";
+// echo "</div>";
 ?>

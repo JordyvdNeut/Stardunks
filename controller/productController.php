@@ -29,8 +29,27 @@ class ProductsController
 				case 'productDetails':
 					$this->collectProduct($_REQUEST['id']);
 					break;
+				case 'updateProductForm':
+					$this->collectUpdateFrom($_REQUEST['id']);
+					break;
+				case 'updateProduct':
+					$this->updateProduct($_REQUEST);
+					break;
+				case 'askDeleteProduct':
+					$this->askDeleteProduct($_REQUEST['id']);
+					break;
+				case 'deleteProduct':
+					$this->deleteProduct($_REQUEST['id']);
+					break;
+				case 'read':
+					if ($_REQUEST['p']) {
+						$this->collectReadProducts($_REQUEST['p']);
+					} else {
+						$this->collectReadProducts(0);
+					}
+					break;
 				default:
-					$this->collectReadProducts();
+					$this->collectReadProducts(1);
 					break;
 			}
 		} catch (ValidationException $e) {
@@ -47,24 +66,47 @@ class ProductsController
 		$createProduct = $this->productsLogic->createProduct($formData);
 		include 'view/createProduct.php';
 	}
+
 	public function collectProduct($id)
 	{
 		$productDetails = $this->productsLogic->readProduct($id);
 		include 'view/productDetail.php';
 	}
+
 	public function collectSearchProduct()
 	{
-		$search = $_REQUEST;
-		$products = $this->productsLogic->searchProduct($search);
+		$products = $this->productsLogic->searchProduct($_REQUEST['search']);
 		$productsSearch = $this->htmlController->search();
-		$productsTable = $this->htmlController->createTable($products);
 		include 'view/products.php';
 	}
 
-	public function collectReadProducts()
+	public function collectReadProducts($position)
 	{
-		$products = $this->productsLogic->readProducts();
+		$products = $this->productsLogic->readProducts($position);
 		$productsSearch = $this->htmlController->search();
 		include 'view/products.php';
+	}
+
+	public function collectUpdateFrom($id)
+	{
+		$productDetails = $this->productsLogic->readProduct($id);
+		include 'view/updateForm.php';
+	}
+	public function updateProduct($formData)
+	{
+		$feedback = $this->productsLogic->updateProduct($formData);
+		include 'view/feedback.php';
+	}
+	public function askDeleteProduct($id)
+	{
+		$productInfo = $this->productsLogic->readProduct($id);
+		$product = $productInfo->fetch(PDO::FETCH_ASSOC);
+		include 'view/askDel.php';
+		return $product;
+	}
+	public function deleteProduct($id)
+	{
+		$feedback = $this->productsLogic->deleteProduct($id);
+		include 'view/feedback.php';
 	}
 }

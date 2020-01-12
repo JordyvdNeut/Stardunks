@@ -34,3 +34,7 @@ table, th, td {
 .right {
   align-items: right;
 }
+
+u {
+  cursor: pointer;
+}

@@ -45,9 +45,20 @@ class DataHandler
 		return $sth;
 	}
 
-	public function countPages($sql)
+	public function updateData($sql)
 	{
-		$items_per_page = 4;
+		$sth = $this->dbh->query($sql);
+		return $sth->rowCount();
+	}
+
+	public function deleteData($sql)
+	{
+		$sth = $this->dbh->query($sql);
+		return $sth->rowCount();
+	}
+
+	public function countPages($sql, $items_per_page)
+	{
 		$result = $this->dbh->query($sql);
 		$get_total_rows = $result->fetch();
 
